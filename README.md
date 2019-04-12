@@ -13,6 +13,7 @@ Converts market tick data into candlestick data of any time frame<br>
 
 # Example
 `python waxy.py EURUSD_TICKS.csv 60`
+
 `cat EURUSD_TICKS_60.csv`
 
 ```1.3245,1.324975,1.326075,1.324375
