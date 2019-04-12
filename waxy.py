@@ -6,10 +6,21 @@ import math
 #XX.XX.XXXX XX:XX:XX.XXX,X.{X},X.{X}
 # {} indicates closure (one or more digits)
 
+#d is a dictionary that contains information for each tick
+# has 9 key:value pairs,
+# in order, they are: DAY, MONTH, YEAR, HOUR, MINUTE, SECOND, ASK, BID, PRICE
+# the PRICE field is the average of the ASK and BID price and will be used in candlestick calculations
+
+# Candlestick data:
+# OPEN,CLOSE,HIGH,LOW
 
 def main():
     f = open(sys.argv[1])
     timeframe = int(sys.argv[2])
+
+    prices = []
+    totalmins = 0
+    currentmin = 0
 
     count = 0
     if(f is None):
@@ -19,9 +30,26 @@ def main():
         if not line[0].isdigit():
             continue
         else:
-            count += 1
             line = line[:-2]
             d = processLine(line)
+            if(count == 0):
+                currentmin = d["MINUTE"]
+            elif(currentmin != d["MINUTE"]):
+                if(d["MINUTE"] < currentmin):
+                    totalmins += (60 - currentmin) + d["MINUTE"]
+                else:
+                    totalmins += d["MINUTE"] - currentmin
+                currentmin = d["MINUTE"]
+            
+                if(totalmins % timeframe == 0 and totalmins is not 0):
+    
+                    makeCandle(prices)
+                    prices = []
+                else:
+                    prices.append(d["PRICE"])
+            
+            count += 1
+
 
 
 
@@ -48,20 +76,22 @@ def processLine(line):
     data.update({"ASK":float(ask)})
     data.update({"BID":float(bid)})
     data.update({"PRICE":(data["ASK"] + data["BID"]) / 2})
-
-    print("DAY:\t" + str(data["DAY"]))
-    print("MONTH:\t" + str(data["MONTH"]))
-    print("YEAR:\t" + str(data["YEAR"]))
-    print("HOUR:\t" + str(data["HOUR"]))
-    print("MINUTE:\t" + str(data["MINUTE"]))
-    print("SECOND:\t" + str(data["SECOND"]))
-    print("ASK:\t" + str(data["ASK"]))
-    print("BID:\t" + str(data["BID"]))
-    print("PRICE:\t" + str(data["PRICE"]))
-    
-    print("")
     
     return data
+
+def makeCandle(prices):
+    openPrice = prices[0]
+    closePrice = prices[-1]
+    highPrice = max(prices)
+    lowPrice = min(prices)
+    filename = sys.argv[1][:-4] + "_" + sys.argv[2] + ".csv"
+
+    f = open(filename, "a+")
+
+    f.write(str(openPrice) + "," + str(closePrice) + "," + str(highPrice) + "," + str(lowPrice) + "\n")
+    f.close()
+
+
 
 if __name__ == "__main__":
     main()
