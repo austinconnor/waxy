@@ -6,4 +6,4 @@ Tick data format:
 - Data is followed by Ask and Bid Volume, however these values are not used
 
 # Usage
-`python waxy.py <filename.csv> <timeframe (in minutes)`
+`python waxy.py <filename.csv> <timeframe (in minutes)>`
