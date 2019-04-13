@@ -9,7 +9,7 @@ Converts market tick data into candlestick data of any time frame<br>
 - Candlestick data is given as `OPEN,CLOSE,HIGH,LOW`
 
 # Usage
-`python waxy.py <filename.csv> <timeframe (in minutes)>`
+`python waxy.py filename.csv timeframe (in minutes)`
 
 # Example
 `python waxy.py EURUSD_TICKS.csv 60`
