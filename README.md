@@ -1,5 +1,5 @@
 # waxy
-Converts market tick data into candlestick data of any time frame<br>
+Converts Forex market tick data into candlestick data of any time frame<br>
 
 - Input format: `DD.MM.YYYY HH:MM:SS.MSS,BID,ASK`
 - Tick data taken from [Dukascopy](https://www.dukascopy.com/swiss/english/marketwatch/historical/) is in this format
