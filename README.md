@@ -16,7 +16,8 @@ Converts Forex market tick data into candlestick data of any time frame<br>
 
 `cat EURUSD_TICKS_60.csv`
 
-```open,high,low,close
+```
+open,high,low,close
 1.3245,1.326075,1.324375,1.324975
 1.325275,1.3267,1.32485,1.32515
 1.324975,1.3266,1.324825,1.32505
