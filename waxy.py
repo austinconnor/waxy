@@ -1,5 +1,7 @@
 import sys
+import os
 import math
+from pathlib import Path
 
 #TICK DATA LINE FORMAT
 #DD/MM/YYYY HR:MI:SE.MS  ASK   BID   
@@ -16,11 +18,19 @@ import math
 
 def main():
     f = open(sys.argv[1])
-    timeframe = int(sys.argv[2])
+    timeframe = int(sys.argv[2])    
+    outfile = sys.argv[1][:-4] + "_" + sys.argv[2] + ".csv"
+
+    exists = os.path.isfile(outfile)
+
+    if(exists):
+        os.remove(outfile)
 
     prices = []
     totalmins = 0
     currentmin = 0
+
+    config = Path()
 
     count = 0
     if(f is None):
@@ -84,11 +94,17 @@ def makeCandle(prices):
     closePrice = prices[-1]
     highPrice = max(prices)
     lowPrice = min(prices)
-    filename = sys.argv[1][:-4] + "_" + sys.argv[2] + ".csv"
+    outfile = sys.argv[1][:-4] + "_" + sys.argv[2] + ".csv"
+    flag = 0
+    if(not os.path.isfile(outfile)):
+        flag = 1
 
-    f = open(filename, "a+")
 
-    f.write(str(openPrice) + "," + str(closePrice) + "," + str(highPrice) + "," + str(lowPrice) + "\n")
+    f = open(outfile, "a+")
+    if(flag == 1):
+        f.write("open,high,low,close\n")
+
+    f.write(str(openPrice) + "," + str(highPrice) + "," + str(lowPrice) + "," + str(closePrice) + "\n")
     f.close()
 
 
